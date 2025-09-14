@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
-import { Calendar, User, ArrowLeft, Share2, Heart } from 'lucide-react';
-import { getPostBySlug, Post } from '../lib/supabase';
+import { Calendar, User, ArrowLeft, Share2, Heart, ChevronDown, ChevronUp } from 'lucide-react';
+import { getPostBySlug, getPosts, Post } from '../lib/supabase';
 import TableOfContents from '../components/TableOfContents';
 
 const BlogPostPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const [post, setPost] = useState<Post | null>(null);
+  const [recentPosts, setRecentPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const [isTocCollapsed, setIsTocCollapsed] = useState(true);
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -68,7 +70,20 @@ const BlogPostPage = () => {
       }
     };
 
+    const fetchRecentPosts = async () => {
+      try {
+        const posts = await getPosts();
+        // Filter out current post and get latest 4
+        const filtered = posts.filter(p => p.slug !== slug).slice(0, 4);
+        setRecentPosts(filtered);
+      } catch (error) {
+        console.error('Error fetching recent posts:', error);
+        setRecentPosts([]);
+      }
+    };
+
     fetchPost();
+    fetchRecentPosts();
   }, [slug]);
 
   const formatDate = (dateString: string) => {
@@ -203,6 +218,18 @@ const BlogPostPage = () => {
     return elements;
   };
 
+  const getExcerpt = (content: string, maxLength: number = 80) => {
+    const cleanContent = content
+      .replace(/#{1,6}\s+/g, '') // Remove heading markers
+      .replace(/\*\*(.*?)\*\*/g, '$1') // Remove bold markers
+      .replace(/\*(.*?)\*/g, '$1') // Remove italic markers
+      .replace(/- /g, '') // Remove list markers
+      .trim();
+    
+    if (cleanContent.length <= maxLength) return cleanContent;
+    return cleanContent.substring(0, maxLength).trim() + '...';
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-white py-20">
@@ -267,6 +294,27 @@ const BlogPostPage = () => {
               <div className="h-1 bg-gradient-to-r from-primary-yellow via-primary-green to-primary-blue rounded-full"></div>
             </header>
 
+            {/* Collapsed Table of Contents */}
+            <div className="mb-8">
+              <button
+                onClick={() => setIsTocCollapsed(!isTocCollapsed)}
+                className="flex items-center justify-between w-full bg-gray-50 hover:bg-gray-100 p-4 rounded-xl transition-colors duration-200"
+              >
+                <h3 className="text-lg font-semibold text-gray-900">İçindekiler</h3>
+                {isTocCollapsed ? (
+                  <ChevronDown className="h-5 w-5 text-gray-500" />
+                ) : (
+                  <ChevronUp className="h-5 w-5 text-gray-500" />
+                )}
+              </button>
+              
+              {!isTocCollapsed && (
+                <div className="mt-4 bg-white border border-gray-200 rounded-xl p-4">
+                  <TableOfContents content={post.content} />
+                </div>
+              )}
+            </div>
+
             {/* Article Content */}
             <article className="prose prose-lg max-w-none">
               <div className="text-lg leading-relaxed">
@@ -275,9 +323,46 @@ const BlogPostPage = () => {
             </article>
           </div>
 
-          {/* Table of Contents Sidebar */}
-          <aside className="lg:col-span-1 order-first lg:order-last">
-            <TableOfContents content={post.content} />
+          {/* Recent Posts Sidebar */}
+          <aside className="lg:col-span-1">
+            <div className="bg-white rounded-2xl shadow-lg p-6 sticky top-24">
+              <h3 className="text-xl font-bold text-gray-900 mb-6">Son Yazılar</h3>
+              
+              {recentPosts.length === 0 ? (
+                <p className="text-gray-500 text-sm">Henüz başka yazı bulunmuyor.</p>
+              ) : (
+                <div className="space-y-4">
+                  {recentPosts.map((recentPost) => (
+                    <article key={recentPost.id} className="group">
+                      <Link 
+                        to={`/blog/${recentPost.slug}`}
+                        className="block hover:bg-gray-50 p-3 rounded-lg transition-colors duration-200"
+                      >
+                        <h4 className="font-semibold text-gray-900 group-hover:text-primary-blue mb-2 text-sm line-clamp-2">
+                          {recentPost.title}
+                        </h4>
+                        <p className="text-gray-600 text-xs mb-2 line-clamp-2">
+                          {getExcerpt(recentPost.content)}
+                        </p>
+                        <div className="flex items-center text-xs text-gray-500">
+                          <Calendar size={12} className="mr-1" />
+                          <span>{formatDate(recentPost.created_at)}</span>
+                        </div>
+                      </Link>
+                    </article>
+                  ))}
+                </div>
+              )}
+              
+              <div className="mt-6 pt-4 border-t border-gray-200">
+                <Link 
+                  to="/blog"
+                  className="block text-center bg-primary-blue hover:bg-primary-blue/90 text-white px-4 py-2 rounded-lg font-semibold text-sm transition-colors duration-200"
+                >
+                  Tüm Yazıları Gör
+                </Link>
+              </div>
+            </div>
           </aside>
         </div>
 
