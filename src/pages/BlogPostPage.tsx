@@ -266,7 +266,7 @@ const BlogPostPage = () => {
           <div className="lg:col-span-3">
             {/* Article Header */}
             <header className="mb-12">
-              <h1 className="text-3xl md:text-5xl font-bold text-text mb-6 leading-tight">
+              <h1 className="text-3xl md:text-5xl font-bold text-accent mb-6 leading-tight">
                 {post.title}
               </h1>
               
