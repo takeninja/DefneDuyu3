@@ -107,32 +107,13 @@ const BlogPostPage = () => {
     lines.forEach((line, index) => {
       const trimmedLine = line.trim();
       
-      if (trimmedLine.startsWith('## ')) {
-        // H2 heading
-        const title = trimmedLine.substring(3);
-        const id = title
-          .toLowerCase()
-          .replace(/[^a-z0-9ğüşıöçĞÜŞIÖÇ\s]/g, '')
-          .replace(/\s+/g, '-')
-          .replace(/[ğĞ]/g, 'g')
-          .replace(/[üÜ]/g, 'u')
-          .replace(/[şŞ]/g, 's')
-          .replace(/[ıI]/g, 'i')
-          .replace(/[öÖ]/g, 'o')
-          .replace(/[çÇ]/g, 'c');
-        
-        elements.push(
-          <h2 
-            key={index} 
-            id={id}
-            className="text-2xl md:text-3xl font-bold text-gray-900 mt-12 mb-6 first:mt-0 scroll-mt-24"
-          >
-            {title}
-          </h2>
-        );
-      } else if (trimmedLine.startsWith('### ')) {
-        // H3 heading
-        const title = trimmedLine.substring(4);
+      // Match ## or ### headings with or without space after hashes
+      const h2Match = trimmedLine.match(/^##\s*(.+)$/);
+      const h3Match = trimmedLine.match(/^###\s*(.+)$/);
+      
+      if (h3Match) {
+        // H3 heading (check h3 first since it has more hashes)
+        const title = h3Match[1].trim();
         const id = title
           .toLowerCase()
           .replace(/[^a-z0-9ğüşıöçĞÜŞIÖÇ\s]/g, '')
@@ -152,6 +133,29 @@ const BlogPostPage = () => {
           >
             {title}
           </h3>
+        );
+      } else if (h2Match) {
+        // H2 heading
+        const title = h2Match[1].trim();
+        const id = title
+          .toLowerCase()
+          .replace(/[^a-z0-9ğüşıöçĞÜŞIÖÇ\s]/g, '')
+          .replace(/\s+/g, '-')
+          .replace(/[ğĞ]/g, 'g')
+          .replace(/[üÜ]/g, 'u')
+          .replace(/[şŞ]/g, 's')
+          .replace(/[ıI]/g, 'i')
+          .replace(/[öÖ]/g, 'o')
+          .replace(/[çÇ]/g, 'c');
+        
+        elements.push(
+          <h2 
+            key={index} 
+            id={id}
+            className="text-2xl md:text-3xl font-bold text-gray-900 mt-12 mb-6 first:mt-0 scroll-mt-24"
+          >
+            {title}
+          </h2>
         );
       } else if (trimmedLine.startsWith('**') && trimmedLine.endsWith('**')) {
         // Bold text

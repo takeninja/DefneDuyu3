@@ -19,7 +19,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ content }) => {
 
   useEffect(() => {
     // Extract headings from content
-    const headingRegex = /^(#{2,3})\s+(.+)$/gm;
+    const headingRegex = /^(#{2,3})\s*(.+)$/gm;
     const items: TOCItem[] = [];
     let match;
 
