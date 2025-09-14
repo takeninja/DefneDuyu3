@@ -11,7 +11,7 @@ const Footer = () => {
           <div className="space-y-6">
             <div className="flex items-center space-x-2">
               <Heart className="h-8 w-8 text-accent fill-accent" />
-              <span className="text-2xl font-bold">CocukGeliyor</span>
+              <span className="text-2xl font-bold">Defne Duyu</span>
             </div>
             <p className="text-gray-400 leading-relaxed">
               Çocukların sağlıklı gelişimi için aileler ve uzmanlar arasında köprü görevi görüyoruz.
@@ -97,7 +97,7 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="border-t border-gray-800 pt-8 text-center text-gray-400">
-          <p>&copy; 2024 CocukGeliyor. Tüm hakları saklıdır.</p>
+          <p>&copy; 2025 Defne Duyu. Tüm hakları saklıdır.</p>
         </div>
       </div>
     </footer>
