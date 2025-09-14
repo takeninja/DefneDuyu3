@@ -1,0 +1,23 @@
+For all designs I ask you to make, have them be beautiful, not cookie cutter. Make webpages that are fully featured and worthy for production.
+
+By default, this template supports JSX syntax with Tailwind CSS classes, React hooks, and Lucide React for icons. Do not install other packages for UI themes, icons, etc unless absolutely necessary or I request them.
+
+Use icons from lucide-react for logos.
+
+I need a full-stack web application with:
+
+Tech Stack:
+- Frontend: React with TypeScript
+- Styling: Tailwind CSS
+- Auth: Supabase (for user authentication and data management)
+- Database: Supabase (PostgreSQL)
+
+Core Features:
+1. User authentication (login, registration, password reset).
+2. A public blog for informational articles.
+3. An online appointment booking system.
+4. A dedicated section for parent coaching for children with Down syndrome and Autism.
+5. An informative section with practical tips for children with ADHD.
+6. An "About Us" page.
+
+Start with the main page containing a modern, single-page-like feel with a clear navigation bar at the top right for "Ana Sayfa", "Blog", "Online Randevu", "Hakkımızda", and a "Login/Register" link.

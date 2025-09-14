@@ -1,0 +1,259 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CSS Custom Properties for Dynamic Color Switching */
+:root {
+  --color-primary: #6B8E6B;
+  --color-secondary: #C7D6C9;
+  --color-background: #FFFDF8;
+  --color-surface: #FFFFFF;
+  --color-text: #2C2C2A;
+  --color-accent: #E08A6C;
+}
+
+/* High Contrast Mode Overrides */
+.high-contrast {
+  --color-primary: #0B5FFF;
+  --color-secondary: #0047B3;
+  --color-background: #FFFFFF;
+  --color-surface: #F0F4FF;
+  --color-text: #0A0A0A;
+  --color-accent: #FFD166;
+}
+
+/* High Contrast Mode - Force Override All Colors */
+.high-contrast,
+.high-contrast * {
+  /* Background Colors */
+  --tw-bg-opacity: 1 !important;
+}
+
+.high-contrast .bg-primary,
+.high-contrast .hover\:bg-primary:hover { 
+  background-color: #0B5FFF !important; 
+}
+
+.high-contrast .bg-secondary { 
+  background-color: #0047B3 !important; 
+}
+
+.high-contrast .bg-background,
+.high-contrast .bg-gray-50,
+.high-contrast .bg-white { 
+  background-color: #FFFFFF !important; 
+}
+
+.high-contrast .bg-surface { 
+  background-color: #F0F4FF !important; 
+}
+
+.high-contrast .bg-accent,
+.high-contrast .hover\:bg-accent:hover { 
+  background-color: #FFD166 !important; 
+}
+
+/* Text Colors */
+.high-contrast .text-primary,
+.high-contrast .hover\:text-primary:hover { 
+  color: #0B5FFF !important; 
+}
+
+.high-contrast .text-secondary { 
+  color: #0047B3 !important; 
+}
+
+.high-contrast .text-text,
+.high-contrast .text-gray-900,
+.high-contrast .text-gray-800,
+.high-contrast .text-gray-700,
+.high-contrast .text-gray-600,
+.high-contrast .text-black,
+.high-contrast h1,
+.high-contrast h2,
+.high-contrast h3,
+.high-contrast h4,
+.high-contrast h5,
+.high-contrast h6,
+.high-contrast p,
+.high-contrast span,
+.high-contrast div { 
+  color: #0A0A0A !important; 
+}
+
+.high-contrast .text-accent,
+.high-contrast .hover\:text-accent:hover { 
+  color: #FFD166 !important; 
+}
+
+.high-contrast .text-white { 
+  color: #FFFFFF !important; 
+}
+
+/* Border Colors */
+.high-contrast .border-primary { 
+  border-color: #0B5FFF !important; 
+}
+
+.high-contrast .border-secondary { 
+  border-color: #0047B3 !important; 
+}
+
+.high-contrast .border-accent { 
+  border-color: #FFD166 !important; 
+}
+
+.high-contrast .border-gray-200,
+.high-contrast .border-gray-300 { 
+  border-color: #0A0A0A !important; 
+}
+
+/* Gradient Overrides */
+.high-contrast .bg-gradient-to-br,
+.high-contrast .bg-gradient-to-r,
+.high-contrast .bg-gradient-to-l { 
+  background: #F0F4FF !important; 
+}
+
+/* Button Specific Overrides */
+.high-contrast button,
+.high-contrast .btn { 
+  background-color: #0B5FFF !important;
+  color: #FFFFFF !important;
+  border-color: #0B5FFF !important;
+}
+
+.high-contrast button:hover,
+.high-contrast .btn:hover { 
+  background-color: #FFD166 !important;
+  color: #0A0A0A !important;
+}
+
+/* Card and Surface Overrides */
+.high-contrast .shadow-lg,
+.high-contrast .shadow-xl,
+.high-contrast .shadow-md { 
+  box-shadow: 0 4px 6px -1px rgba(10, 10, 10, 0.3) !important;
+}
+
+/* Form Elements */
+.high-contrast input,
+.high-contrast select,
+.high-contrast textarea { 
+  background-color: #FFFFFF !important;
+  color: #0A0A0A !important;
+  border-color: #0A0A0A !important;
+}
+
+.high-contrast input:focus,
+.high-contrast select:focus,
+.high-contrast textarea:focus { 
+  border-color: #0B5FFF !important;
+  box-shadow: 0 0 0 2px rgba(11, 95, 255, 0.3) !important;
+}
+
+/* Apply CSS variables to Tailwind classes - Default Mode */
+body:not(.high-contrast) .bg-primary { background-color: var(--color-primary) !important; }
+body:not(.high-contrast) .bg-secondary { background-color: var(--color-secondary) !important; }
+body:not(.high-contrast) .bg-background { background-color: var(--color-background) !important; }
+body:not(.high-contrast) .bg-surface { background-color: var(--color-surface) !important; }
+body:not(.high-contrast) .bg-accent { background-color: var(--color-accent) !important; }
+
+body:not(.high-contrast) .text-primary { color: var(--color-primary) !important; }
+body:not(.high-contrast) .text-secondary { color: var(--color-secondary) !important; }
+body:not(.high-contrast) .text-text { color: var(--color-text) !important; }
+body:not(.high-contrast) .text-accent { color: var(--color-accent) !important; }
+
+body:not(.high-contrast) .border-primary { border-color: var(--color-primary) !important; }
+body:not(.high-contrast) .border-secondary { border-color: var(--color-secondary) !important; }
+body:not(.high-contrast) .border-accent { border-color: var(--color-accent) !important; }
+
+/* Hover states */
+body:not(.high-contrast) .hover\:bg-primary:hover { background-color: var(--color-primary) !important; }
+body:not(.high-contrast) .hover\:bg-accent:hover { background-color: var(--color-accent) !important; }
+body:not(.high-contrast) .hover\:text-primary:hover { color: var(--color-primary) !important; }
+body:not(.high-contrast) .hover\:text-accent:hover { color: var(--color-accent) !important; }
+
+/* Large Text Mode Styles */
+.large-text {
+  font-size: 2rem !important; /* 24px base */
+}
+
+
+.large-text h3 {
+  font-size: 1.75rem !important; /* 28px */
+}
+
+.large-text h4,
+.large-text h5,
+.large-text h6 {
+  font-size: 2rem !important; /* 32px */
+}
+
+.large-text p,
+.large-text span,
+.large-text div,
+.large-text li,
+.large-text a,
+.large-text button,
+.large-text input,
+.large-text select,
+.large-text textarea,
+.large-text label {
+  font-size: 1.5rem !important; /* 24px */
+}
+
+.large-text .text-xs {
+  font-size: 1.25rem !important; /* 20px */
+}
+
+.large-text .text-sm {
+  font-size: 1.375rem !important; /* 22px */
+}
+
+.large-text .text-base {
+  font-size: 1.5rem !important; /* 24px */
+}
+
+.large-text .text-lg {
+  font-size: 1.75rem !important; /* 28px */
+}
+
+.large-text .text-xl {
+  font-size: 2rem !important; /* 32px */
+}
+
+.large-text .text-2xl {
+  font-size: 2.25rem !important; /* 36px */
+}
+
+.large-text .text-3xl {
+  font-size: 2.5rem !important; /* 40px */
+}
+
+.large-text .text-4xl {
+  font-size: 3rem !important; /* 48px */
+}
+
+.large-text .text-5xl {
+  font-size: 3.5rem !important; /* 56px */
+}
+
+.large-text .text-6xl {
+  font-size: 4rem !important; /* 64px */
+}
+
+.large-text .text-7xl {
+  font-size: 4.5rem !important; /* 72px */
+}
+
+.large-text .text-8xl {
+  font-size: 5rem !important; /* 80px */
+}
+
+@layer base {
+  body {
+    background-color: var(--color-background);
+    color: var(--color-text);
+  }
+}
