@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Heart, Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
+import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
+import logo from '../images/logo.png';
 
 const Footer = () => {
   return (
@@ -10,7 +11,7 @@ const Footer = () => {
           {/* Company Info */}
           <div className="space-y-6">
             <div className="flex items-center space-x-2">
-              <Heart className="h-8 w-8 text-accent fill-accent" />
+              <img src={logo} alt="Defne Duyu Logo" className="h-8 w-8" />
               <span className="text-2xl font-bold">Defne Duyu</span>
             </div>
             <p className="text-gray-400 leading-relaxed">

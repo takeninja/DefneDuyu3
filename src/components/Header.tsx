@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Heart, User, LogOut } from 'lucide-react';
+import { Menu, X, User, LogOut } from 'lucide-react';
 import AuthModal from './AuthModal';
 import { useAuth } from '../hooks/useAuth';
+import logo from '../images/logo.png';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -23,7 +24,7 @@ const Header = () => {
           {/* Logo */}
           <div className="flex items-center space-x-2">
             <Link to="/" className="flex items-center space-x-2">
-              <Heart className="h-8 w-8 text-accent fill-accent" />
+              <img src={logo} alt="Defne Duyu Logo" className="h-8 w-8" />
               <span className="text-2xl font-bold text-primary">Defne Duyu</span>
             </Link>
           </div>
