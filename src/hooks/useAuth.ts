@@ -7,6 +7,14 @@ export const useAuth = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Check if supabase is properly configured
+    if (!supabase) {
+      console.warn('Supabase is not configured. Authentication features will be disabled.');
+      setUser(null);
+      setLoading(false);
+      return;
+    }
+
     // Get initial session
     const getInitialSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
@@ -28,6 +36,10 @@ export const useAuth = () => {
   }, []);
 
   const signOut = async () => {
+    if (!supabase) {
+      console.warn('Supabase is not configured. Cannot sign out.');
+      return;
+    }
     await supabase.auth.signOut();
   };
 
