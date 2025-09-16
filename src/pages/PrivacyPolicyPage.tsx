@@ -7,7 +7,10 @@ const PrivacyPolicyPage = () => {
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
       metaDesc.setAttribute('content', 'Defne Duyu gizlilik politikası. Kişisel verilerinizin korunması ve yapay zeka eğitimleri için kullanımı hakkında detaylı bilgiler.');
+    }
+    metaDesc.setAttribute('content',
         'Defne Duyu Bütünleme gizlilik politikası. Kullanıcı verilerinin korunması, platform güvenliği ve yapay zeka modelimizin geliştirilmesi hakkında detaylı bilgiler.'
+    );
   }, []);
 
   return (
