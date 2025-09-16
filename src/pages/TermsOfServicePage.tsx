@@ -1,19 +1,21 @@
 import React from 'react';
-import { FileText, Users, Shield, AlertTriangle, CheckCircle, Scale } from 'lucide-react';
+import { FileText, Users, Shield, AlertTriangle, CheckCircle, Scale, Brain } from 'lucide-react';
 
 const TermsOfServicePage = () => {
   React.useEffect(() => {
-    document.title = 'Kullanım Şartları - Defne Duyu';
+    document.title = 'Kullanım Şartları - Defne Duyu Bütünleme';
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
-      metaDesc.setAttribute('content', 'Defne Duyu kullanım şartları. Platform kullanımı, hizmet koşulları ve kullanıcı sorumlulukları hakkında detaylı bilgiler.');
+      metaDesc.setAttribute('content', 
+        'Defne Duyu Bütünleme platformu kullanım şartları. Platform kullanımı, hizmet koşulları, kullanıcı sorumlulukları ve veri kullanımı hakkında detaylı bilgiler.'
+      );
     }
   }, []);
 
   const sections = [
     {
       icon: Users,
-      title: 'Kullanıcı Sorumlulukları',
+      title: 'Kullanıcı Yükümlülükleri',
       content: 'Platform kullanımında uyulması gereken kurallar ve sorumluluklar.'
     },
     {
@@ -37,7 +39,7 @@ const TermsOfServicePage = () => {
             <span className="text-primary">Kullanım</span> <span className="text-accent">Şartları</span>
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Defne Duyu platformunu kullanarak aşağıdaki şartları kabul etmiş sayılırsınız. 
+            Defne Duyu Bütünleme platformunu kullanarak aşağıdaki şartları kabul etmiş sayılırsınız. 
             Lütfen bu şartları dikkatlice okuyunuz.
           </p>
         </div>
@@ -60,55 +62,28 @@ const TermsOfServicePage = () => {
         {/* Detailed Content */}
         <div className="bg-white rounded-3xl shadow-xl p-8 md:p-12">
           <div className="prose prose-lg max-w-none">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">1. Genel Hükümler</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">
+              Defne Duyu Bütünleme Platformu Kullanım Şartları
+            </h2>
+
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">1. Amaç ve Kapsam</h2>
+            <p className="text-gray-700 mb-8 leading-relaxed">
+              Bu kullanım şartları, <a href="http://www.defneduyu.com" className="text-primary-blue hover:text-primary-green underline" target="_blank" rel="noopener noreferrer">www.defneduyu.com</a> alan adlı internet sitesi ("Platform") üzerinden sunulan hizmetlerden faydalanan tüm kullanıcılar ("Kullanıcı") ile Platform'un sahibi olan Defne Duyu Bütünleme ("Şirket") arasında düzenlenmiştir.
+            </p>
+
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">2. Hizmetin Konusu</h2>
+            <p className="text-gray-700 mb-8 leading-relaxed">
+              Platform, otizmli, DEHB'li ve benzeri nörogelişimsel farklılıklara sahip çocukların ebeveynlerine rehberlik ve destek sağlamak amacıyla kurulmuştur. Kullanıcılar, deneyimlerini paylaşabilir, uzmanlardan içerik okuyabilir, topluluk desteği alabilir.
+            </p>
+
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">3. Kullanıcı Yükümlülükleri</h2>
             <p className="text-gray-700 mb-6 leading-relaxed">
-              Bu kullanım şartları, Defne Duyu platformunun kullanımını düzenler. Platform kullanımı ile 
-              bu şartları kabul etmiş sayılırsınız.
+              Kullanıcılar aşağıdaki kurallara uymakla yükümlüdür:
             </p>
             <ul className="list-disc list-inside text-gray-700 mb-8 space-y-2">
-              <li>Platform 18 yaş üstü kullanıcılar içindir</li>
-              <li>Verilen bilgilerin doğru ve güncel olması gerekmektedir</li>
-              <li>Hesap güvenliğinden kullanıcı sorumludur</li>
-              <li>Platform kurallarına uyulması zorunludur</li>
-            </ul>
-
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">2. Hizmet Kapsamı</h2>
-            <p className="text-gray-700 mb-6 leading-relaxed">
-              Defne Duyu aşağıdaki hizmetleri sunmaktadır:
-            </p>
-            <ul className="list-disc list-inside text-gray-700 mb-8 space-y-2">
-              <li>Online ebeveyn koçluğu hizmetleri</li>
-              <li>Otizmli çocuklar için özel destek programları</li>
-              <li>Ergoterapi danışmanlığı</li>
-              <li>Çocuk gelişimi konularında bilgilendirme</li>
-              <li>Online randevu ve danışmanlık sistemi</li>
-            </ul>
-
-            <div className="bg-blue-50 border-l-4 border-blue-400 p-6 mb-8">
-              <div className="flex items-start">
-                <CheckCircle className="h-6 w-6 text-blue-600 mt-1 mr-3 flex-shrink-0" />
-                <div>
-                  <h3 className="text-lg font-semibold text-blue-800 mb-2">
-                    Hizmet Kalitesi Taahhüdü
-                  </h3>
-                  <p className="text-blue-700 leading-relaxed">
-                    Sunduğumuz tüm hizmetler alanında uzman kişiler tarafından verilmektedir. 
-                    Hizmet kalitesini sürekli geliştirmek için çalışıyoruz.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">3. Kullanıcı Sorumlulukları</h2>
-            <p className="text-gray-700 mb-6 leading-relaxed">
-              Platform kullanıcıları aşağıdaki kurallara uymakla yükümlüdür:
-            </p>
-            <ul className="list-disc list-inside text-gray-700 mb-8 space-y-2">
-              <li>Doğru ve güncel bilgi paylaşımı</li>
-              <li>Randevu saatlerine uyum</li>
-              <li>Saygılı ve uygun iletişim</li>
-              <li>Platform kurallarına uygun davranış</li>
-              <li>Telif hakları ve fikri mülkiyet haklarına saygı</li>
+              <li>Paylaştıkları içeriklerin doğru ve hukuka uygun olmasından sorumludur</li>
+              <li>Hakaret, nefret söylemi, ayrımcılık, kişisel veri ifşası veya yasa dışı içerikler kesinlikle yasaktır</li>
+              <li>Platform'da paylaştığı içeriklerin diğer kullanıcılar tarafından görülebileceğini kabul eder</li>
             </ul>
 
             <div className="bg-red-50 border-l-4 border-red-400 p-6 mb-8">
@@ -119,42 +94,64 @@ const TermsOfServicePage = () => {
                     Yasaklı Davranışlar
                   </h3>
                   <p className="text-red-700 leading-relaxed">
-                    Platform üzerinde hakaret, spam, yanıltıcı bilgi paylaşımı, başkalarının 
-                    hesaplarını kullanma ve yasalara aykırı davranışlar kesinlikle yasaktır.
+                    Platform üzerinde hakaret, nefret söylemi, ayrımcılık, kişisel veri ifşası ve yasalara aykırı davranışlar kesinlikle yasaktır.
                   </p>
                 </div>
               </div>
             </div>
 
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">4. Ödeme ve İptal Koşulları</h2>
-            <p className="text-gray-700 mb-6 leading-relaxed">
-              Ücretli hizmetler için aşağıdaki koşullar geçerlidir:
-            </p>
-            <ul className="list-disc list-inside text-gray-700 mb-8 space-y-2">
-              <li>Ödeme işlemleri güvenli ödeme sistemleri ile yapılır</li>
-              <li>Randevu iptalleri 24 saat öncesinden yapılmalıdır</li>
-              <li>İade koşulları hizmet türüne göre değişiklik gösterir</li>
-              <li>Fiyat değişiklikleri önceden bildirilir</li>
-            </ul>
-
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">5. Sorumluluk Sınırlaması</h2>
-            <p className="text-gray-700 mb-6 leading-relaxed">
-              Defne Duyu platformu:
-            </p>
-            <ul className="list-disc list-inside text-gray-700 mb-8 space-y-2">
-              <li>Hizmet kesintilerinden sorumlu değildir</li>
-              <li>Üçüncü taraf bağlantılarından sorumlu değildir</li>
-              <li>Kullanıcı verilerinin yanlış kullanımından sorumlu değildir</li>
-              <li>Teknik sorunlardan kaynaklanan zararlardan sorumlu değildir</li>
-            </ul>
-
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">6. Değişiklikler</h2>
-            <p className="text-gray-700 mb-6 leading-relaxed">
-              Bu kullanım şartları gerektiğinde güncellenebilir. Önemli değişiklikler kullanıcılara 
-              e-posta yoluyla bildirilir.
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">4. Fikri Haklar</h2>
+            <p className="text-gray-700 mb-8 leading-relaxed">
+              Platform'da yer alan tüm içerikler ve görseller Defne Duyu Bütünleme'ye aittir. Kullanıcılar, bu içerikleri Şirket'in izni olmaksızın kopyalayamaz, çoğaltamaz, dağıtamaz.
             </p>
 
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">7. İletişim</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">5. Veri Kullanımı</h2>
+            <p className="text-gray-700 mb-6 leading-relaxed">
+              Kullanıcı, KVKK kapsamında kişisel verilerinin toplanmasına, işlenmesine ve gerektiğinde <strong>yapay zekâ modelimizin geliştirilmesi için anonimleştirilerek kullanılmasına</strong> onay verir.
+            </p>
+
+            <div className="bg-blue-50 border-l-4 border-blue-400 p-6 mb-8">
+              <div className="flex items-start">
+                <Brain className="h-6 w-6 text-blue-600 mt-1 mr-3 flex-shrink-0" />
+                <div>
+                  <h3 className="text-lg font-semibold text-blue-800 mb-2">
+                    Yapay Zeka Geliştirme
+                  </h3>
+                  <p className="text-blue-700 leading-relaxed">
+                    Kişisel verileriniz, platform hizmetlerini iyileştirmek ve daha etkili destek sunabilmek 
+                    amacıyla yapay zeka modelimizin geliştirilmesinde kullanılabilir. Bu süreçte verileriniz 
+                    anonimleştirilir ve sadece hizmet kalitesini artırmak için kullanılır.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">6. Sorumluluk Reddi</h2>
+            <p className="text-gray-700 mb-8 leading-relaxed">
+              Platform'da yer alan bilgiler yalnızca bilgilendirme ve rehberlik amaçlıdır. Buradaki içerikler tıbbi veya psikolojik tedavi tavsiyesi niteliği taşımaz. Kullanıcılar gerektiğinde sağlık profesyonellerine başvurmalıdır.
+            </p>
+
+            <div className="bg-yellow-50 border-l-4 border-yellow-400 p-6 mb-8">
+              <div className="flex items-start">
+                <CheckCircle className="h-6 w-6 text-yellow-600 mt-1 mr-3 flex-shrink-0" />
+                <div>
+                  <h3 className="text-lg font-semibold text-yellow-800 mb-2">
+                    Önemli Uyarı
+                  </h3>
+                  <p className="text-yellow-700 leading-relaxed">
+                    Platform'daki bilgiler rehberlik amaçlıdır ve profesyonel tıbbi tavsiye yerine geçmez. 
+                    Çocuğunuzun sağlığı ile ilgili kararlar için mutlaka uzman doktor görüşü alınız.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">7. Yürürlük</h2>
+            <p className="text-gray-700 mb-8 leading-relaxed">
+              Bu kullanım şartları güncel tarih itibarıyla geçerlidir. Defne Duyu Bütünleme, gerekli gördüğü durumlarda şartlarda değişiklik yapabilir.
+            </p>
+
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">8. İletişim</h2>
             <p className="text-gray-700 mb-4 leading-relaxed">
               Kullanım şartları hakkında sorularınız için:
             </p>
