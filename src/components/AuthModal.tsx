@@ -11,6 +11,7 @@ interface AuthModalProps {
 const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuccess }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -24,6 +25,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuccess })
     setEmail('');
     setPassword('');
     setConfirmPassword('');
+    setAgreedToTerms(false);
     setError('');
     setSuccess('');
     setShowPassword(false);
@@ -103,9 +105,18 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuccess })
           return;
         }
 
+        if (!agreedToTerms) {
+          setError('Devam etmek için gizlilik politikası ve kullanım şartlarını kabul etmelisiniz');
+          setLoading(false);
+          return;
+        }
+
         const { data, error } = await supabase.auth.signUp({
           email,
           password,
+          options: {
+            emailRedirectTo: `${window.location.origin}/email-confirmed`
+          }
         });
 
         if (error) {
@@ -120,11 +131,11 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuccess })
             setError('Kayıt olurken bir hata oluştu');
           }
         } else {
-          setSuccess('Kayıt başarılı! Giriş yapabilirsiniz.');
+          setSuccess('Kayıt başarılı! E-posta adresinize gönderilen doğrulama linkine tıklayarak hesabınızı aktifleştirin.');
           setTimeout(() => {
             setIsLogin(true);
             resetForm();
-          }, 2000);
+          }, 4000);
         }
       }
     } catch (err) {
@@ -299,6 +310,36 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuccess })
                     <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
                   )}
                 </button>
+              </div>
+            </div>
+          )}
+
+          {/* Terms Agreement (Register only) */}
+          {!isLogin && !showForgotPassword && (
+            <div className="space-y-4">
+              <div className="flex items-start space-x-3">
+                <input
+                  type="checkbox"
+                  id="agreedToTerms"
+                  checked={agreedToTerms}
+                  onChange={(e) => setAgreedToTerms(e.target.checked)}
+                  required
+                  className="mt-1 h-4 w-4 text-primary-blue focus:ring-primary-blue border-gray-300 rounded"
+                />
+                <label htmlFor="agreedToTerms" className="text-sm text-gray-700 leading-relaxed">
+                  <a href="/gizlilik-politikasi" target="_blank" className="text-primary-blue hover:text-primary-green underline">
+                    Gizlilik Politikası
+                  </a>
+                  , {' '}
+                  <a href="/kullanim-sartlari" target="_blank" className="text-primary-blue hover:text-primary-green underline">
+                    Kullanım Şartları
+                  </a>
+                  {' '} ve {' '}
+                  <a href="/kvkk" target="_blank" className="text-primary-blue hover:text-primary-green underline">
+                    KVKK Aydınlatma Metni
+                  </a>
+                  'ni okudum ve <strong>verilerimin yapay zeka eğitimleri için kullanılabileceğini</strong> onaylıyorum.
+                </label>
               </div>
             </div>
           )}

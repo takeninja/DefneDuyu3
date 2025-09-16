@@ -7,6 +7,9 @@ import BlogPage from './pages/BlogPage';
 import BlogPostPage from './pages/BlogPostPage';
 import OnlineRandevuPage from './pages/OnlineRandevuPage';
 import HakkimizdaPage from './pages/HakkimizdaPage';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import TermsOfServicePage from './pages/TermsOfServicePage';
+import KvkkPage from './pages/KvkkPage';
 
 function App() {
   return (
@@ -18,6 +21,9 @@ function App() {
         <Route path="/blog/:slug" element={<BlogPostPage />} />
         <Route path="/online-randevu" element={<OnlineRandevuPage />} />
         <Route path="/hakkimizda" element={<HakkimizdaPage />} />
+        <Route path="/gizlilik-politikasi" element={<PrivacyPolicyPage />} />
+        <Route path="/kullanim-sartlari" element={<TermsOfServicePage />} />
+        <Route path="/kvkk" element={<KvkkPage />} />
       </Routes>
       <Footer />
     </div>

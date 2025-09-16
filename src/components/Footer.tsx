@@ -40,8 +40,8 @@ const Footer = () => {
               <li><Link to="/" className="text-gray-400 hover:text-accent transition-colors duration-300">Ana Sayfa</Link></li>
               <li><Link to="/blog" className="text-gray-400 hover:text-accent transition-colors duration-300">Blog</Link></li>
               <li><a href="#hizmetler" className="text-gray-400 hover:text-accent transition-colors duration-300">Hizmetler</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-accent transition-colors duration-300">SSS</a></li>
               <li><Link to="/hakkimizda" className="text-gray-400 hover:text-accent transition-colors duration-300">Hakkımızda</Link></li>
+              <li><Link to="/online-randevu" className="text-gray-400 hover:text-accent transition-colors duration-300">Online Randevu</Link></li>
             </ul>
           </div>
 
@@ -55,8 +55,18 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Contact Info */}
+          {/* Legal Links */}
           <div>
+            <h3 className="text-lg font-bold mb-6">Yasal Belgeler</h3>
+            <ul className="space-y-3">
+              <li><Link to="/gizlilik-politikasi" className="text-gray-400 hover:text-accent transition-colors duration-300">Gizlilik Politikası</Link></li>
+              <li><Link to="/kullanim-sartlari" className="text-gray-400 hover:text-accent transition-colors duration-300">Kullanım Şartları</Link></li>
+              <li><Link to="/kvkk" className="text-gray-400 hover:text-accent transition-colors duration-300">KVKK Aydınlatma Metni</Link></li>
+            </ul>
+          </div>
+
+          {/* Contact Info */}
+          <div className="md:col-span-1">
             <h3 className="text-lg font-bold mb-6">İletişim</h3>
             <div className="space-y-4">
               <div className="flex items-center space-x-3">
