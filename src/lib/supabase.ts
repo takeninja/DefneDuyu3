@@ -1,13 +1,30 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables');
+// Check if environment variables are properly configured
+const isSupabaseConfigured = () => {
+  return supabaseUrl && 
+         supabaseAnonKey && 
+         supabaseUrl !== 'https://your-project-id.supabase.co' &&
+         supabaseAnonKey !== 'your-anon-key-here' &&
+         supabaseUrl.includes('supabase.co');
+};
+
+// Only create client if properly configured, otherwise use null
+export const supabase = isSupabaseConfigured() 
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : null;
+
+// Helper function to check if Supabase is available
+const checkSupabaseConnection = () => {
+  if (!supabase) {
+    console.warn('Supabase is not properly configured. Please check your environment variables.');
+    return false;
+  }
+  return true;
 }
-
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Database types
 export interface Post {
@@ -32,8 +49,13 @@ export interface Appointment {
 
 // Blog post functions
 export const getPosts = async (): Promise<Post[]> => {
+  if (!checkSupabaseConnection()) {
+    console.warn('Supabase not configured, returning empty posts array');
+    return [];
+  }
+
   try {
-    const { data, error } = await supabase
+    const { data, error } = await supabase!
       .from('posts')
       .select('*')
       .order('created_at', { ascending: false });
@@ -56,8 +78,13 @@ export const getPosts = async (): Promise<Post[]> => {
 };
 
 export const getPostBySlug = async (slug: string): Promise<Post | null> => {
+  if (!checkSupabaseConnection()) {
+    console.warn('Supabase not configured, returning null for post');
+    return null;
+  }
+
   try {
-    const { data, error } = await supabase
+    const { data, error } = await supabase!
       .from('posts')
       .select('*')
       .eq('slug', slug)
@@ -81,8 +108,13 @@ export const getPostBySlug = async (slug: string): Promise<Post | null> => {
 
 // Appointment functions
 export const createAppointment = async (appointment: Omit<Appointment, 'id' | 'created_at'>): Promise<boolean> => {
+  if (!checkSupabaseConnection()) {
+    console.warn('Supabase not configured, cannot create appointment');
+    return false;
+  }
+
   try {
-    const { error } = await supabase
+    const { error } = await supabase!
       .from('appointments')
       .insert([appointment]);
 
@@ -103,8 +135,13 @@ export const createAppointment = async (appointment: Omit<Appointment, 'id' | 'c
 };
 
 export const getAppointments = async (): Promise<Appointment[]> => {
+  if (!checkSupabaseConnection()) {
+    console.warn('Supabase not configured, returning empty appointments array');
+    return [];
+  }
+
   try {
-    const { data, error } = await supabase
+    const { data, error } = await supabase!
       .from('appointments')
       .select('*')
       .order('created_at', { ascending: false });
