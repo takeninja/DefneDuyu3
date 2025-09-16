@@ -88,26 +88,8 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Newsletter */}
-        <div className="border-t border-gray-800 pt-12 mb-8">
-          <div className="max-w-md mx-auto text-center">
-            <h3 className="text-xl font-bold mb-4">Bültenimize Abone Olun</h3>
-            <p className="text-gray-400 mb-6">Çocuk gelişimi hakkında güncel bilgileri kaçırmayın.</p>
-            <div className="flex space-x-3">
-              <input 
-                type="email" 
-                placeholder="E-posta adresiniz"
-                className="flex-1 px-4 py-3 bg-gray-800 border border-gray-700 rounded-full focus:outline-none focus:border-primary-blue text-white"
-              />
-              <button className="bg-primary hover:bg-primary/90 px-6 py-3 rounded-full font-semibold transition-colors duration-300">
-                Abone Ol
-              </button>
-            </div>
-          </div>
-        </div>
-
         {/* Bottom Bar */}
-        <div className="border-t border-gray-800 pt-8 text-center text-gray-400">
+        <div className="border-t border-gray-800 pt-8 mt-8 text-center text-gray-400">
           <p>&copy; 2025 Defne Duyu. Tüm hakları saklıdır.</p>
         </div>
       </div>
