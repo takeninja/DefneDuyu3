@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
+import { X, Mail, Lock, User, Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 interface AuthModalProps {
@@ -10,6 +10,7 @@ interface AuthModalProps {
 
 const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuccess }) => {
   const [isLogin, setIsLogin] = useState(true);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -27,11 +28,40 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuccess })
     setSuccess('');
     setShowPassword(false);
     setShowConfirmPassword(false);
+    setShowForgotPassword(false);
   };
 
   const handleClose = () => {
     resetForm();
     onClose();
+  };
+
+  const handlePasswordReset = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    setSuccess('');
+
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password`
+      });
+
+      if (error) {
+        setError('Şifre sıfırlama e-postası gönderilirken bir hata oluştu');
+      } else {
+        setSuccess('Şifre sıfırlama bağlantısı e-posta adresinize gönderildi!');
+        setTimeout(() => {
+          setShowForgotPassword(false);
+          setIsLogin(true);
+          resetForm();
+        }, 3000);
+      }
+    } catch (err) {
+      setError('Beklenmeyen bir hata oluştu');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -79,9 +109,16 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuccess })
         });
 
         if (error) {
-          setError(error.message === 'User already registered' 
-            ? 'Bu e-posta adresi zaten kayıtlı' 
-            : 'Kayıt olurken bir hata oluştu');
+          if (error.message === 'User already registered' || error.message.includes('already registered')) {
+            setError('Bu e-posta adresi zaten kayıtlı. Şifrenizi mi unuttunuz?');
+            // Show forgot password option
+            setTimeout(() => {
+              setShowForgotPassword(true);
+              setIsLogin(true);
+            }, 2000);
+          } else {
+            setError('Kayıt olurken bir hata oluştu');
+          }
         } else {
           setSuccess('Kayıt başarılı! Giriş yapabilirsiniz.');
           setTimeout(() => {
@@ -113,12 +150,14 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuccess })
         {/* Header */}
         <div className="text-center mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            {isLogin ? 'Giriş Yap' : 'Kayıt Ol'}
+            {showForgotPassword ? 'Şifrenizi Sıfırlayın' : (isLogin ? 'Giriş Yap' : 'Kayıt Ol')}
           </h2>
           <p className="text-gray-600">
-            {isLogin 
-              ? 'Hesabınıza giriş yapın' 
-              : 'Yeni hesap oluşturun'
+            {showForgotPassword 
+              ? 'E-posta adresinizi girin, şifre sıfırlama bağlantısını gönderelim'
+              : (isLogin 
+                ? 'Hesabınıza giriş yapın' 
+                : 'Yeni hesap oluşturun')
             }
           </p>
         </div>
@@ -138,15 +177,34 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuccess })
         )}
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={showForgotPassword ? handlePasswordReset : handleSubmit} className="space-y-6">
+          {/* Back to Login Button (Forgot Password) */}
+          {showForgotPassword && (
+            <button
+              type="button"
+              onClick={() => setShowForgotPassword(false)}
+              className="flex items-center space-x-2 text-primary-blue hover:text-primary-green transition-colors duration-200 mb-4"
+            >
+              <ArrowLeft size={16} />
+              <span>Giriş sayfasına dön</span>
+            </button>
+          )}
+
           {/* Email Field */}
           <div>
             <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
-              E-posta Adresi
+              {showForgotPassword 
+                ? 'E-posta Adresi' 
+                : (isLogin ? 'E-posta Adresi veya Kullanıcı Adı' : 'E-posta Adresi')
+              }
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Mail className="h-5 w-5 text-gray-400" />
+                {isLogin && !showForgotPassword ? (
+                  <User className="h-5 w-5 text-gray-400" />
+                ) : (
+                  <Mail className="h-5 w-5 text-gray-400" />
+                )}
               </div>
               <input
                 type="email"
@@ -155,13 +213,18 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuccess })
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-transparent transition-all duration-200"
-                placeholder="ornek@email.com"
+                placeholder={
+                  showForgotPassword 
+                    ? 'ornek@email.com' 
+                    : (isLogin ? 'E-posta adresinizi veya kullanıcı adınızı girin' : 'ornek@email.com')
+                }
               />
             </div>
           </div>
 
           {/* Password Field */}
-          <div>
+          {!showForgotPassword && (
+            <div>
             <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-2">
               Şifre
             </label>
@@ -190,10 +253,24 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuccess })
                 )}
               </button>
             </div>
-          </div>
+            </div>
+          )}
+
+          {/* Forgot Password Link (Login only) */}
+          {isLogin && !showForgotPassword && (
+            <div className="text-right">
+              <button
+                type="button"
+                onClick={() => setShowForgotPassword(true)}
+                className="text-sm text-primary-blue hover:text-primary-green transition-colors duration-200"
+              >
+                Şifremi Unuttum
+              </button>
+            </div>
+          )}
 
           {/* Confirm Password Field (Register only) */}
-          {!isLogin && (
+          {!isLogin && !showForgotPassword && (
             <div>
               <label htmlFor="confirmPassword" className="block text-sm font-semibold text-gray-700 mb-2">
                 Şifre Tekrar
@@ -235,16 +312,22 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuccess })
             {loading ? (
               <span className="flex items-center justify-center">
                 <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                {isLogin ? 'Giriş yapılıyor...' : 'Kayıt olunuyor...'}
+                {showForgotPassword 
+                  ? 'Gönderiliyor...' 
+                  : (isLogin ? 'Giriş yapılıyor...' : 'Kayıt olunuyor...')
+                }
               </span>
             ) : (
-              isLogin ? 'Giriş Yap' : 'Kayıt Ol'
+              showForgotPassword 
+                ? 'Şifre Sıfırlama Bağlantısı Gönder' 
+                : (isLogin ? 'Giriş Yap' : 'Kayıt Ol')
             )}
           </button>
         </form>
 
         {/* Toggle Login/Register */}
-        <div className="mt-6 text-center">
+        {!showForgotPassword && (
+          <div className="mt-6 text-center">
           <p className="text-gray-600">
             {isLogin ? 'Hesabınız yok mu?' : 'Zaten hesabınız var mı?'}
             <button
@@ -257,7 +340,8 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuccess })
               {isLogin ? 'Kayıt Ol' : 'Giriş Yap'}
             </button>
           </p>
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );
