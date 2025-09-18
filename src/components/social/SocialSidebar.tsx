@@ -55,7 +55,6 @@ const SocialSidebar: React.FC<SocialSidebarProps> = ({ user, onChatClick }) => {
     { icon: MessageCircle, label: 'Sohbet', path: '/sosyal-medya/messages', count: 0 },
     { icon: Bookmark, label: 'Kaydedilenler', path: '/sosyal-medya/saved' },
     { icon: Calendar, label: 'Etkinlikler', path: '/sosyal-medya/events' },
-    { icon: Settings, label: 'Ayarlar', path: '/sosyal-medya/settings' },
     { icon: HelpCircle, label: 'Yardım', path: '/sosyal-medya/help' },
   ];
 
@@ -83,6 +82,17 @@ const SocialSidebar: React.FC<SocialSidebarProps> = ({ user, onChatClick }) => {
             </h3>
             <p className="text-sm text-gray-500">Ebeveyn Topluluğu Üyesi</p>
           </div>
+        </div>
+        
+        {/* Settings Link */}
+        <div className="mt-3 pt-3 border-t border-gray-100">
+          <Link
+            to="/sosyal-medya/settings"
+            className="flex items-center space-x-2 text-sm text-gray-600 hover:text-primary transition-colors duration-200"
+          >
+            <Settings className="w-4 h-4" />
+            <span>Ayarlar</span>
+          </Link>
         </div>
       </div>
 

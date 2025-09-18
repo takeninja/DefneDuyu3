@@ -84,8 +84,20 @@ const Header = () => {
               <div className="w-8 h-8 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
             ) : isAuthenticated ? (
               <div className="flex items-center space-x-3">
-                <div className="flex items-center space-x-2 text-text">
-                  <User size={20} />
+                <div className="flex items-center space-x-3 text-text">
+                  {user?.user_metadata?.profile_photo_url ? (
+                    <img
+                      src={user.user_metadata.profile_photo_url}
+                      alt="Profile"
+                      className="w-8 h-8 rounded-full object-cover border-2 border-primary/20"
+                    />
+                  ) : (
+                    <div className="w-8 h-8 bg-gradient-to-r from-primary to-accent rounded-full flex items-center justify-center">
+                      <span className="text-white text-sm font-semibold">
+                        {user?.email?.charAt(0).toUpperCase() || 'U'}
+                      </span>
+                    </div>
+                  )}
                   <span className="text-sm font-medium">
                     {user?.email?.split('@')[0]}
                   </span>
@@ -175,8 +187,20 @@ const Header = () => {
                   </div>
                 ) : isAuthenticated ? (
                   <div className="space-y-3">
-                    <div className="flex items-center space-x-2 text-text">
-                      <User size={20} />
+                    <div className="flex items-center space-x-3 text-text">
+                      {user?.user_metadata?.profile_photo_url ? (
+                        <img
+                          src={user.user_metadata.profile_photo_url}
+                          alt="Profile"
+                          className="w-8 h-8 rounded-full object-cover border-2 border-primary/20"
+                        />
+                      ) : (
+                        <div className="w-8 h-8 bg-gradient-to-r from-primary to-accent rounded-full flex items-center justify-center">
+                          <span className="text-white text-sm font-semibold">
+                            {user?.email?.charAt(0).toUpperCase() || 'U'}
+                          </span>
+                        </div>
+                      )}
                       <span className="font-medium">
                         {user?.email?.split('@')[0]}
                       </span>
