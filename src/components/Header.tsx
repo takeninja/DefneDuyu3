@@ -12,7 +12,7 @@ const Header = () => {
   const { user, loading, signOut, isAuthenticated } = useAuth();
 
   // Hide header on social media pages
-  if (location.pathname === '/sosyal-medya') {
+  if (location.pathname.startsWith('/sosyal-medya')) {
     return null;
   }
 

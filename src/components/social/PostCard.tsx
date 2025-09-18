@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Heart, MessageCircle, Share, MoreHorizontal, ThumbsUp } from 'lucide-react';
+import { Heart, MessageCircle, Share, MoreHorizontal, ThumbsUp, Bookmark } from 'lucide-react';
 import { SocialPost } from '../../lib/socialSupabase';
+import { savePost, unsavePost } from '../../lib/socialSupabase';
 
 interface PostCardProps {
   post: SocialPost;
@@ -9,6 +10,7 @@ interface PostCardProps {
 
 const PostCard: React.FC<PostCardProps> = ({ post, currentUser }) => {
   const [liked, setLiked] = useState(false);
+  const [saved, setSaved] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [comment, setComment] = useState('');
 
@@ -42,6 +44,15 @@ const PostCard: React.FC<PostCardProps> = ({ post, currentUser }) => {
     setComment('');
   };
 
+  const handleSave = async () => {
+    if (saved) {
+      const success = await unsavePost(post.id);
+      if (success) setSaved(false);
+    } else {
+      const success = await savePost(post.id);
+      if (success) setSaved(true);
+    }
+  };
   return (
     <div className="bg-white rounded-xl shadow-sm">
       {/* Post Header */}
@@ -114,6 +125,18 @@ const PostCard: React.FC<PostCardProps> = ({ post, currentUser }) => {
           >
             <MessageCircle className="h-5 w-5" />
             <span className="font-medium">Yorum</span>
+          </button>
+          
+          <button
+            onClick={handleSave}
+            className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors duration-200 ${
+              saved 
+                ? 'text-primary bg-primary/10' 
+                : 'text-gray-600 hover:bg-gray-50'
+            }`}
+          >
+            <Bookmark className={`h-5 w-5 ${saved ? 'fill-current' : ''}`} />
+            <span className="font-medium">Kaydet</span>
           </button>
           
           <button className="flex items-center space-x-2 px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors duration-200">

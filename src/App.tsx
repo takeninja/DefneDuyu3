@@ -8,6 +8,12 @@ import BlogPostPage from './pages/BlogPostPage';
 import OnlineRandevuPage from './pages/OnlineRandevuPage';
 import SosyalMedyaPage from './pages/SosyalMedyaPage';
 import HakkimizdaPage from './pages/HakkimizdaPage';
+import FriendsPage from './pages/FriendsPage';
+import MessagesPage from './pages/MessagesPage';
+import SavedPostsPage from './pages/SavedPostsPage';
+import EventsPage from './pages/EventsPage';
+import SettingsPage from './pages/SettingsPage';
+import HelpPage from './pages/HelpPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import TermsOfServicePage from './pages/TermsOfServicePage';
 import KvkkPage from './pages/KvkkPage';
@@ -25,6 +31,12 @@ function App() {
           <Route path="/blog/:slug" element={<BlogPostPage />} />
           <Route path="/online-randevu" element={<OnlineRandevuPage />} />
           <Route path="/sosyal-medya" element={<SosyalMedyaPage />} />
+          <Route path="/sosyal-medya/friends" element={<FriendsPage />} />
+          <Route path="/sosyal-medya/messages" element={<MessagesPage />} />
+          <Route path="/sosyal-medya/saved" element={<SavedPostsPage />} />
+          <Route path="/sosyal-medya/events" element={<EventsPage />} />
+          <Route path="/sosyal-medya/settings" element={<SettingsPage />} />
+          <Route path="/sosyal-medya/help" element={<HelpPage />} />
           <Route path="/hakkimizda" element={<HakkimizdaPage />} />
           <Route path="/gizlilik-politikasi" element={<PrivacyPolicyPage />} />
           <Route path="/kullanim-sartlari" element={<TermsOfServicePage />} />

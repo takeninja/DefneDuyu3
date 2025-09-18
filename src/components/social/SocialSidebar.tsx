@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { Home, Users, MessageCircle, Bookmark, Calendar, Settings, HelpCircle } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 
 interface SocialSidebarProps {
@@ -49,13 +50,13 @@ const SocialSidebar: React.FC<SocialSidebarProps> = ({ user, onChatClick }) => {
   };
 
   const menuItems = [
-    { icon: Home, label: 'Ana Sayfa', active: true },
-    { icon: Users, label: 'Arkadaşlar', count: 0 },
-    { icon: MessageCircle, label: 'Sohbet', count: 0 },
-    { icon: Bookmark, label: 'Kaydedilenler' },
-    { icon: Calendar, label: 'Etkinlikler' },
-    { icon: Settings, label: 'Ayarlar' },
-    { icon: HelpCircle, label: 'Yardım' },
+    { icon: Home, label: 'Ana Sayfa', path: '/sosyal-medya', active: true },
+    { icon: Users, label: 'Arkadaşlar', path: '/sosyal-medya/friends', count: 0 },
+    { icon: MessageCircle, label: 'Sohbet', path: '/sosyal-medya/messages', count: 0 },
+    { icon: Bookmark, label: 'Kaydedilenler', path: '/sosyal-medya/saved' },
+    { icon: Calendar, label: 'Etkinlikler', path: '/sosyal-medya/events' },
+    { icon: Settings, label: 'Ayarlar', path: '/sosyal-medya/settings' },
+    { icon: HelpCircle, label: 'Yardım', path: '/sosyal-medya/help' },
   ];
 
   return (
@@ -81,7 +82,8 @@ const SocialSidebar: React.FC<SocialSidebarProps> = ({ user, onChatClick }) => {
       <div className="bg-white rounded-xl shadow-sm">
         <nav className="p-2">
           {menuItems.map((item, index) => (
-            <button
+            <Link
+              to={item.path}
               key={index}
               className={`w-full flex items-center justify-between px-3 py-3 rounded-lg transition-colors duration-200 ${
                 item.active 
@@ -98,7 +100,7 @@ const SocialSidebar: React.FC<SocialSidebarProps> = ({ user, onChatClick }) => {
                   {item.count}
                 </span>
               )}
-            </button>
+            </Link>
           ))}
         </nav>
       </div>
