@@ -4,12 +4,12 @@ import { useAuth } from '../hooks/useAuth';
 import SocialFeed from '../components/social/SocialFeed';
 import SocialSidebar from '../components/social/SocialSidebar';
 import SocialHeader from '../components/social/SocialHeader';
-import ChatBot from '../components/social/ChatBot';
 import AuthModal from '../components/AuthModal';
 
 const SosyalMedyaPage = () => {
   const { user, loading, isAuthenticated } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showChat, setShowChat] = useState(false);
 
   useEffect(() => {
     document.title = 'Sosyal Medya - Defne Duyu | Ebeveyn Topluluğu';
@@ -20,6 +20,10 @@ const SosyalMedyaPage = () => {
       );
     }
   }, []);
+
+  const handleChatToggle = () => {
+    setShowChat(!showChat);
+  };
 
   // Show loading while checking authentication
   if (loading) {
@@ -71,15 +75,12 @@ const SosyalMedyaPage = () => {
       
       <div className="flex max-w-7xl mx-auto">
         {/* Left Sidebar */}
-        <SocialSidebar user={user} />
+        <SocialSidebar user={user} onChatClick={handleChatToggle} />
         
         {/* Main Content Area */}
         <div className="flex-1 px-4 py-6">
-          {/* ChatBot */}
-          <ChatBot />
-          
           {/* Social Feed */}
-          <SocialFeed user={user} />
+          <SocialFeed user={user} showChat={showChat} onChatToggle={handleChatToggle} />
         </div>
         
         {/* Right Sidebar - Friends & Chat */}

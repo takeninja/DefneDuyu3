@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import PostCreator from './PostCreator';
 import PostCard from './PostCard';
+import ChatBot from './ChatBot';
 import { getSocialPosts, createSocialPost, SocialPost } from '../../lib/socialSupabase';
 
 interface SocialFeedProps {
   user: any;
+  showChat: boolean;
+  onChatToggle: () => void;
 }
 
-const SocialFeed: React.FC<SocialFeedProps> = ({ user }) => {
+const SocialFeed: React.FC<SocialFeedProps> = ({ user, showChat, onChatToggle }) => {
   const [posts, setPosts] = useState<SocialPost[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -32,7 +35,7 @@ const SocialFeed: React.FC<SocialFeedProps> = ({ user }) => {
         content,
         image_url: imageUrl,
         author_email: user.email,
-        author_name: user.email?.split('@')[0] || 'Kullanıcı'
+        author_name: user?.user_metadata?.full_name || user.email?.split('@')[0] || 'Kullanıcı'
       });
 
       if (success) {
@@ -68,6 +71,9 @@ const SocialFeed: React.FC<SocialFeedProps> = ({ user }) => {
 
   return (
     <div className="space-y-6">
+      {/* AI Chat Bot */}
+      <ChatBot isOpen={showChat} onToggle={onChatToggle} />
+      
       {/* Post Creator */}
       <PostCreator user={user} onPostCreated={handleNewPost} />
 

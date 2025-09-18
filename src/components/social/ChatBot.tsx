@@ -8,8 +8,12 @@ interface Message {
   timestamp: Date;
 }
 
-const ChatBot: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
+interface ChatBotProps {
+  isOpen: boolean;
+  onToggle: () => void;
+}
+
+const ChatBot: React.FC<ChatBotProps> = ({ isOpen, onToggle }) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -96,12 +100,12 @@ const ChatBot: React.FC = () => {
   };
 
   return (
-    <div className="mb-6">
+    <div className="mb-6 relative">
       {/* Chat Toggle Button */}
       {!isOpen && (
         <div className="bg-white rounded-xl shadow-sm p-4">
           <button
-            onClick={() => setIsOpen(true)}
+            onClick={onToggle}
             className="w-full flex items-center justify-center space-x-3 p-4 bg-gradient-to-r from-primary to-accent text-white rounded-xl hover:shadow-lg transition-all duration-300"
           >
             <Bot className="h-6 w-6" />
@@ -113,7 +117,7 @@ const ChatBot: React.FC = () => {
 
       {/* Chat Interface */}
       {isOpen && (
-        <div className="bg-white rounded-xl shadow-lg border border-gray-200">
+        <div className="bg-white rounded-xl shadow-lg border border-gray-200 fixed bottom-4 right-4 w-96 h-96 z-50">
           {/* Chat Header */}
           <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-primary to-accent text-white rounded-t-xl">
             <div className="flex items-center space-x-3">
@@ -125,13 +129,13 @@ const ChatBot: React.FC = () => {
             </div>
             <div className="flex items-center space-x-2">
               <button
-                onClick={() => setIsOpen(false)}
+                onClick={onToggle}
                 className="p-1 hover:bg-white/20 rounded-full transition-colors duration-200"
               >
                 <Minimize2 className="h-4 w-4" />
               </button>
               <button
-                onClick={() => setIsOpen(false)}
+                onClick={onToggle}
                 className="p-1 hover:bg-white/20 rounded-full transition-colors duration-200"
               >
                 <X className="h-4 w-4" />
@@ -140,7 +144,7 @@ const ChatBot: React.FC = () => {
           </div>
 
           {/* Messages */}
-          <div className="h-80 overflow-y-auto p-4 space-y-4">
+          <div className="h-64 overflow-y-auto p-4 space-y-4">
             {messages.map((message) => (
               <div
                 key={message.id}
