@@ -7,6 +7,7 @@ export interface SocialPost {
   image_url?: string;
   author_email: string;
   author_name: string;
+  author_photo_url?: string;
   likes_count: number;
   comments_count: number;
   shares_count: number;
@@ -34,6 +35,7 @@ export interface Profile {
   id: string;
   full_name?: string;
   avatar_url?: string;
+  profile_photo_url?: string;
   bio?: string;
   location?: string;
   website?: string;
@@ -128,17 +130,27 @@ export const getSocialPosts = async (): Promise<SocialPost[]> => {
   }
 };
 
-export const createSocialPost = async (post: Omit<SocialPost, 'id' | 'created_at' | 'likes_count' | 'comments_count' | 'shares_count'>): Promise<boolean> => {
+export const createSocialPost = async (post: Omit<SocialPost, 'id' | 'created_at' | 'likes_count' | 'comments_count' | 'shares_count' | 'author_photo_url'>): Promise<boolean> => {
   if (!checkSupabaseConnection()) {
     console.warn('Supabase not configured, cannot create social post');
     return false;
   }
 
   try {
+    // Get user's profile photo
+    const { data: { user } } = await supabase!.auth.getUser();
+    let authorPhotoUrl = null;
+    
+    if (user) {
+      const profile = await getProfile(user.id);
+      authorPhotoUrl = profile?.profile_photo_url;
+    }
+
     const { error } = await supabase!
       .from('social_posts')
       .insert([{
         ...post,
+        author_photo_url: authorPhotoUrl,
         likes_count: 0,
         comments_count: 0,
         shares_count: 0
@@ -233,7 +245,7 @@ export const toggleLike = async (postId: string, userEmail: string): Promise<boo
       .eq('user_email', userEmail)
       .single();
 
-    if (checkError && checkError.code !== 'PGRST116') {
+    if (checkError && checkError.code !== 'PGRST116' && checkError.code !== 'PGRST116') {
       console.error('Error checking existing like:', checkError);
       return false;
     }
@@ -249,6 +261,16 @@ export const toggleLike = async (postId: string, userEmail: string): Promise<boo
         console.error('Error removing like:', deleteError);
         return false;
       }
+
+      // Decrease like count
+      const { error: updateError } = await supabase!
+        .from('social_posts')
+        .update({ likes_count: supabase!.rpc('decrement_likes', { post_id: postId }) })
+        .eq('id', postId);
+
+      if (updateError) {
+        console.error('Error updating like count:', updateError);
+      }
     } else {
       // Add like
       const { error: insertError } = await supabase!
@@ -259,11 +281,45 @@ export const toggleLike = async (postId: string, userEmail: string): Promise<boo
         console.error('Error adding like:', insertError);
         return false;
       }
+
+      // Increase like count
+      const { error: updateError } = await supabase!
+        .from('social_posts')
+        .update({ likes_count: supabase!.rpc('increment_likes', { post_id: postId }) })
+        .eq('id', postId);
+
+      if (updateError) {
+        console.error('Error updating like count:', updateError);
+      }
     }
 
     return true;
   } catch (error) {
     console.warn('Failed to toggle like:', error);
+    return false;
+  }
+};
+
+// Check if user has liked a post
+export const hasUserLikedPost = async (postId: string, userEmail: string): Promise<boolean> => {
+  if (!checkSupabaseConnection()) return false;
+
+  try {
+    const { data, error } = await supabase!
+      .from('social_likes')
+      .select('id')
+      .eq('post_id', postId)
+      .eq('user_email', userEmail)
+      .maybeSingle();
+
+    if (error) {
+      console.error('Error checking if user liked post:', error);
+      return false;
+    }
+
+    return !!data;
+  } catch (error) {
+    console.warn('Failed to check if user liked post:', error);
     return false;
   }
 };
@@ -308,6 +364,34 @@ export const updateProfile = async (userId: string, updates: Partial<Profile>): 
   } catch (error) {
     console.warn('Failed to update profile:', error);
     return false;
+  }
+};
+
+// Upload profile photo
+export const uploadProfilePhoto = async (userId: string, file: File): Promise<string | null> => {
+  if (!checkSupabaseConnection()) return null;
+
+  try {
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${userId}/profile.${fileExt}`;
+
+    const { data, error } = await supabase!.storage
+      .from('profile-photos')
+      .upload(fileName, file, { upsert: true });
+
+    if (error) {
+      console.error('Error uploading profile photo:', error);
+      return null;
+    }
+
+    const { data: { publicUrl } } = supabase!.storage
+      .from('profile-photos')
+      .getPublicUrl(fileName);
+
+    return publicUrl;
+  } catch (error) {
+    console.warn('Failed to upload profile photo:', error);
+    return null;
   }
 };
 

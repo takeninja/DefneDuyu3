@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Bookmark, Calendar, User, Trash2 } from 'lucide-react';
 import { getSavedPosts, unsavePost, SavedPost } from '../lib/socialSupabase';
+import SocialSidebar from '../components/social/SocialSidebar';
+import SocialHeader from '../components/social/SocialHeader';
+import { useAuth } from '../hooks/useAuth';
 
 const SavedPostsPage = () => {
+  const { user } = useAuth();
   const [savedPosts, setSavedPosts] = useState<SavedPost[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -56,8 +60,11 @@ const SavedPostsPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8">
-      <div className="max-w-4xl mx-auto px-4">
+    <div className="min-h-screen bg-gray-100">
+      <SocialHeader user={user} />
+      <div className="flex max-w-7xl mx-auto">
+        <SocialSidebar user={user} onChatClick={() => {}} />
+        <div className="flex-1 px-4 py-6">
         {/* Header */}
         <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
           <h1 className="text-2xl font-bold text-gray-900 flex items-center">
@@ -153,6 +160,7 @@ const SavedPostsPage = () => {
             })}
           </div>
         )}
+      </div>
       </div>
     </div>
   );

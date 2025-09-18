@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Calendar, MapPin, Users, Plus, Clock, Check, X, AlertCircle } from 'lucide-react';
 import { getEvents, createEvent, rsvpToEvent, Event } from '../lib/socialSupabase';
 import { useAuth } from '../hooks/useAuth';
+import SocialSidebar from '../components/social/SocialSidebar';
+import SocialHeader from '../components/social/SocialHeader';
 
 const EventsPage = () => {
   const { user } = useAuth();
@@ -108,8 +110,11 @@ const EventsPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8">
-      <div className="max-w-6xl mx-auto px-4">
+    <div className="min-h-screen bg-gray-100">
+      <SocialHeader user={user} />
+      <div className="flex max-w-7xl mx-auto">
+        <SocialSidebar user={user} onChatClick={() => {}} />
+        <div className="flex-1 px-4 py-6">
         {/* Header */}
         <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
           <div className="flex items-center justify-between">
@@ -326,6 +331,7 @@ const EventsPage = () => {
             })}
           </div>
         )}
+      </div>
       </div>
     </div>
   );

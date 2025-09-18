@@ -1,7 +1,11 @@
 import React from 'react';
 import { HelpCircle, MessageCircle, Mail, Phone, ChevronDown, ChevronUp } from 'lucide-react';
+import SocialSidebar from '../components/social/SocialSidebar';
+import SocialHeader from '../components/social/SocialHeader';
+import { useAuth } from '../hooks/useAuth';
 
 const HelpPage = () => {
+  const { user } = useAuth();
   const [openFAQ, setOpenFAQ] = React.useState<number | null>(null);
 
   const faqs = [
@@ -44,8 +48,11 @@ const HelpPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8">
-      <div className="max-w-4xl mx-auto px-4">
+    <div className="min-h-screen bg-gray-100">
+      <SocialHeader user={user} />
+      <div className="flex max-w-7xl mx-auto">
+        <SocialSidebar user={user} onChatClick={() => {}} />
+        <div className="flex-1 px-4 py-6">
         {/* Header */}
         <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
           <h1 className="text-2xl font-bold text-gray-900 flex items-center">
@@ -197,6 +204,7 @@ const HelpPage = () => {
             </a>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

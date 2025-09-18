@@ -3,6 +3,8 @@ import { MessageCircle, Send, Search, ArrowLeft } from 'lucide-react';
 import { getFriends, getMessages, sendMessage, Profile, Message } from '../lib/socialSupabase';
 import { useAuth } from '../hooks/useAuth';
 import { supabase } from '../lib/supabase';
+import SocialSidebar from '../components/social/SocialSidebar';
+import SocialHeader from '../components/social/SocialHeader';
 
 const MessagesPage = () => {
   const { user } = useAuth();
@@ -136,7 +138,10 @@ const MessagesPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <div className="flex h-screen">
+      <SocialHeader user={user} />
+      <div className="flex max-w-7xl mx-auto">
+        <SocialSidebar user={user} onChatClick={() => {}} />
+        <div className="flex-1 flex h-screen">
         {/* Friends Sidebar */}
         <div className={`${selectedFriend ? 'hidden md:block' : 'block'} w-full md:w-80 bg-white border-r border-gray-200`}>
           <div className="p-4 border-b border-gray-200">
@@ -318,6 +323,7 @@ const MessagesPage = () => {
             </div>
           )}
         </div>
+      </div>
       </div>
     </div>
   );

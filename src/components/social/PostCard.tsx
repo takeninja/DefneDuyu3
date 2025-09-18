@@ -70,11 +70,19 @@ const PostCard: React.FC<PostCardProps> = ({ post, currentUser }) => {
       <div className="p-4 border-b border-gray-100">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-r from-primary to-accent rounded-full flex items-center justify-center">
-              <span className="text-white text-sm font-semibold">
-                {post.author_name?.charAt(0).toUpperCase() || 'U'}
-              </span>
-            </div>
+            {post.author_photo_url ? (
+              <img
+                src={post.author_photo_url}
+                alt={post.author_name}
+                className="w-10 h-10 rounded-full object-cover"
+              />
+            ) : (
+              <div className="w-10 h-10 bg-gradient-to-r from-primary to-accent rounded-full flex items-center justify-center">
+                <span className="text-white text-sm font-semibold">
+                  {post.author_name?.charAt(0).toUpperCase() || 'U'}
+                </span>
+              </div>
+            )}
             <div>
               <h4 className="font-semibold text-gray-900">{post.author_name}</h4>
               <p className="text-sm text-gray-500">{formatDate(post.created_at)}</p>

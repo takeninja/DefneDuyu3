@@ -90,11 +90,19 @@ const SocialSidebar: React.FC<SocialSidebarProps> = ({ user, onChatClick }) => {
                   ? 'bg-primary/10 text-primary' 
                   : 'hover:bg-gray-50 text-gray-700'
               }`}
-            >
-              <div className="flex items-center space-x-3">
-                <item.icon className={`h-5 w-5 ${item.active ? 'text-primary' : 'text-gray-600'}`} />
-                <span className="font-medium">{item.label}</span>
-              </div>
+              {user?.user_metadata?.profile_photo_url ? (
+                <img
+                  src={user.user_metadata.profile_photo_url}
+                  alt="Profile"
+                  className="w-12 h-12 rounded-full object-cover"
+                />
+              ) : (
+                <div className="w-12 h-12 bg-gradient-to-r from-primary to-accent rounded-full flex items-center justify-center">
+                  <span className="text-white text-lg font-semibold">
+                    {user?.email?.charAt(0).toUpperCase() || 'U'}
+                  </span>
+                </div>
+              )}
               {item.count !== undefined && (
                 <span className="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full">
                   {item.count}

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Settings, User, Camera, Save, AlertCircle, CheckCircle } from 'lucide-react';
-import { getProfile, updateProfile, Profile } from '../lib/socialSupabase';
+import { getProfile, updateProfile, uploadProfilePhoto, Profile } from '../lib/socialSupabase';
 import { useAuth } from '../hooks/useAuth';
+import SocialSidebar from '../components/social/SocialSidebar';
+import SocialHeader from '../components/social/SocialHeader';
 
 const SettingsPage = () => {
   const { user } = useAuth();
@@ -14,6 +16,7 @@ const SettingsPage = () => {
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
   useEffect(() => {
@@ -86,13 +89,48 @@ const SettingsPage = () => {
     setTimeout(() => setMessage(null), 5000);
   };
 
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !user) return;
+
+    setUploadingPhoto(true);
+    setMessage(null);
+
+    try {
+      const photoUrl = await uploadProfilePhoto(user.id, file);
+      if (photoUrl) {
+        const success = await updateProfile(user.id, { profile_photo_url: photoUrl });
+        if (success) {
+          setMessage({ type: 'success', text: 'Profil fotoğrafı başarıyla güncellendi!' });
+          fetchProfile(); // Refresh profile data
+        } else {
+          setMessage({ type: 'error', text: 'Profil fotoğrafı kaydedilirken bir hata oluştu.' });
+        }
+      } else {
+        setMessage({ type: 'error', text: 'Fotoğraf yüklenirken bir hata oluştu.' });
+      }
+    } catch (error) {
+      console.error('Error uploading photo:', error);
+      setMessage({ type: 'error', text: 'Beklenmeyen bir hata oluştu.' });
+    } finally {
+      setUploadingPhoto(false);
+    }
+
+    // Clear message after 5 seconds
+    setTimeout(() => setMessage(null), 5000);
+  };
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-100 py-8">
-        <div className="max-w-2xl mx-auto px-4">
+      <div className="min-h-screen bg-gray-100">
+        <SocialHeader user={user} />
+        <div className="flex max-w-7xl mx-auto">
+          <SocialSidebar user={user} onChatClick={() => {}} />
+          <div className="flex-1 px-4 py-6">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
             <p className="mt-4 text-gray-600">Yükleniyor...</p>
+          </div>
           </div>
         </div>
       </div>
@@ -100,8 +138,11 @@ const SettingsPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8">
-      <div className="max-w-2xl mx-auto px-4">
+    <div className="min-h-screen bg-gray-100">
+      <SocialHeader user={user} />
+      <div className="flex max-w-7xl mx-auto">
+        <SocialSidebar user={user} onChatClick={() => {}} />
+        <div className="flex-1 px-4 py-6 max-w-2xl">
         {/* Header */}
         <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
           <h1 className="text-2xl font-bold text-gray-900 flex items-center">
@@ -139,21 +180,37 @@ const SettingsPage = () => {
             {/* Profile Picture Section */}
             <div className="text-center">
               <div className="relative inline-block">
-                <div className="w-24 h-24 bg-gradient-to-r from-primary to-accent rounded-full flex items-center justify-center">
-                  <span className="text-white text-2xl font-bold">
-                    {formData.full_name?.charAt(0) || user?.email?.charAt(0)?.toUpperCase() || 'U'}
-                  </span>
-                </div>
-                <button
-                  type="button"
-                  className="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-lg border border-gray-200 hover:bg-gray-50 transition-colors duration-200"
-                  title="Profil fotoğrafını değiştir"
-                >
+                {profile?.profile_photo_url ? (
+                  <img
+                    src={profile.profile_photo_url}
+                    alt="Profile"
+                    className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg"
+                  />
+                ) : (
+                  <div className="w-24 h-24 bg-gradient-to-r from-primary to-accent rounded-full flex items-center justify-center">
+                    <span className="text-white text-2xl font-bold">
+                      {formData.full_name?.charAt(0) || user?.email?.charAt(0)?.toUpperCase() || 'U'}
+                    </span>
+                  </div>
+                )}
+                <label className="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-lg border border-gray-200 hover:bg-gray-50 transition-colors duration-200 cursor-pointer">
                   <Camera className="h-4 w-4 text-gray-600" />
-                </button>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handlePhotoUpload}
+                    className="hidden"
+                    disabled={uploadingPhoto}
+                  />
+                </label>
+                {uploadingPhoto && (
+                  <div className="absolute inset-0 bg-black bg-opacity-50 rounded-full flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
+                  </div>
+                )}
               </div>
               <p className="text-sm text-gray-500 mt-2">
-                Profil fotoğrafı özelliği yakında eklenecek
+                Profil fotoğrafınızı değiştirmek için kameraya tıklayın
               </p>
             </div>
 
@@ -247,6 +304,7 @@ const SettingsPage = () => {
             </div>
           </form>
         </div>
+      </div>
       </div>
     </div>
   );

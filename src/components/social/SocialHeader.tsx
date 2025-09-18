@@ -78,11 +78,19 @@ const SocialHeader: React.FC<SocialHeaderProps> = ({ user }) => {
                       </div>
                       <div>
                         <p className="font-semibold text-gray-900">
-                          {user?.email?.split('@')[0] || 'Kullanıcı'}
-                        </p>
-                        <p className="text-sm text-gray-500">{user?.email}</p>
+                    {user?.user_metadata?.profile_photo_url ? (
+                      <img
+                        src={user.user_metadata.profile_photo_url}
+                        alt="Profile"
+                        className="w-12 h-12 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-12 h-12 bg-gradient-to-r from-primary to-accent rounded-full flex items-center justify-center">
+                        <span className="text-white text-lg font-semibold">
+                          {user?.email?.charAt(0).toUpperCase() || 'U'}
+                        </span>
                       </div>
-                    </div>
+                    )}
                   </div>
                   
                   <Link
