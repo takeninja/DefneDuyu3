@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Heart, MessageCircle, Share, MoreHorizontal, ThumbsUp, Bookmark } from 'lucide-react';
 import { SocialPost } from '../../lib/socialSupabase';
-import { savePost, unsavePost } from '../../lib/socialSupabase';
+import { savePost, unsavePost, isPostSavedByUser } from '../../lib/socialSupabase';
 
 interface PostCardProps {
   post: SocialPost;
@@ -13,6 +13,17 @@ const PostCard: React.FC<PostCardProps> = ({ post, currentUser }) => {
   const [saved, setSaved] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [comment, setComment] = useState('');
+
+  useEffect(() => {
+    const checkSavedStatus = async () => {
+      if (currentUser && post.id) {
+        const isSaved = await isPostSavedByUser(post.id);
+        setSaved(isSaved);
+      }
+    };
+
+    checkSavedStatus();
+  }, [post.id, currentUser]);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);

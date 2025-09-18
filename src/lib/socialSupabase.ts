@@ -497,6 +497,32 @@ export const getMessages = async (friendId: string): Promise<Message[]> => {
 };
 
 // Saved posts functions
+export const isPostSavedByUser = async (postId: string): Promise<boolean> => {
+  if (!checkSupabaseConnection()) return false;
+
+  try {
+    const { data: { user } } = await supabase!.auth.getUser();
+    if (!user) return false;
+
+    const { data, error } = await supabase!
+      .from('saved_posts')
+      .select('id')
+      .eq('user_id', user.id)
+      .eq('post_id', postId)
+      .maybeSingle();
+
+    if (error) {
+      console.error('Error checking if post is saved:', error);
+      return false;
+    }
+
+    return !!data;
+  } catch (error) {
+    console.warn('Failed to check if post is saved:', error);
+    return false;
+  }
+};
+
 export const savePost = async (postId: string): Promise<boolean> => {
   if (!checkSupabaseConnection()) return false;
 
