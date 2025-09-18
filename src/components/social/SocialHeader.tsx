@@ -78,6 +78,13 @@ const SocialHeader: React.FC<SocialHeaderProps> = ({ user }) => {
                       </div>
                       <div>
                         <p className="font-semibold text-gray-900">
+                          {user?.email || 'Kullanıcı'}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="px-4 py-3">
                     {user?.user_metadata?.profile_photo_url ? (
                       <img
                         src={user.user_metadata.profile_photo_url}
