@@ -56,6 +56,23 @@ const Header = () => {
               Online Randevu
             </Link>
             <Link 
+              to="/sosyal-medya" 
+              className={`transition-colors duration-200 font-medium ${
+                isActive('/sosyal-medya') ? 'text-primary' : 'text-text hover:text-primary'
+              }`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Sosyal Medya
+            </Link>
+            <Link 
+              to="/sosyal-medya" 
+              className={`transition-colors duration-200 font-medium ${
+                isActive('/sosyal-medya') ? 'text-primary' : 'text-text hover:text-primary'
+              }`}
+            >
+              Sosyal Medya
+            </Link>
+            <Link 
               to="/hakkimizda" 
               className={`transition-colors duration-200 font-medium ${
                 isActive('/hakkimizda') ? 'text-primary' : 'text-text hover:text-primary'

@@ -6,6 +6,7 @@ import HomePage from './pages/HomePage';
 import BlogPage from './pages/BlogPage';
 import BlogPostPage from './pages/BlogPostPage';
 import OnlineRandevuPage from './pages/OnlineRandevuPage';
+import SosyalMedyaPage from './pages/SosyalMedyaPage';
 import HakkimizdaPage from './pages/HakkimizdaPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import TermsOfServicePage from './pages/TermsOfServicePage';
@@ -23,6 +24,7 @@ function App() {
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/blog/:slug" element={<BlogPostPage />} />
           <Route path="/online-randevu" element={<OnlineRandevuPage />} />
+          <Route path="/sosyal-medya" element={<SosyalMedyaPage />} />
           <Route path="/hakkimizda" element={<HakkimizdaPage />} />
           <Route path="/gizlilik-politikasi" element={<PrivacyPolicyPage />} />
           <Route path="/kullanim-sartlari" element={<TermsOfServicePage />} />
