@@ -11,6 +11,11 @@ const Header = () => {
   const location = useLocation();
   const { user, loading, signOut, isAuthenticated } = useAuth();
 
+  // Hide header on social media pages
+  if (location.pathname === '/sosyal-medya') {
+    return null;
+  }
+
   const isActive = (path: string) => {
     if (path === '/' && location.pathname === '/') return true;
     if (path !== '/' && location.pathname.startsWith(path)) return true;
@@ -54,15 +59,6 @@ const Header = () => {
               }`}
             >
               Online Randevu
-            </Link>
-            <Link 
-              to="/sosyal-medya" 
-              className={`transition-colors duration-200 font-medium ${
-                isActive('/sosyal-medya') ? 'text-primary' : 'text-text hover:text-primary'
-              }`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Sosyal Medya
             </Link>
             <Link 
               to="/sosyal-medya" 
@@ -151,6 +147,15 @@ const Header = () => {
                 onClick={() => setIsMenuOpen(false)}
               >
                 Online Randevu
+              </Link>
+              <Link 
+                to="/sosyal-medya" 
+                className={`transition-colors duration-200 font-medium ${
+                  isActive('/sosyal-medya') ? 'text-primary' : 'text-text hover:text-primary'
+                }`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Sosyal Medya
               </Link>
               <Link 
                 to="/hakkimizda" 
