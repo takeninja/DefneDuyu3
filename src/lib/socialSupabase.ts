@@ -418,8 +418,8 @@ export const getFriends = async (): Promise<Profile[]> => {
       .from('friends')
       .select(`
         *,
-        requester:profiles!friends_requester_id_fkey(*),
-        addressee:profiles!friends_addressee_id_fkey(*)
+        requester:profiles!requester_id(*),
+        addressee:profiles!addressee_id(*)
       `)
       .or(`requester_id.eq.${user.id},addressee_id.eq.${user.id}`)
       .eq('status', 'accepted');
