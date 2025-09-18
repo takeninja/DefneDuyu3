@@ -23,9 +23,6 @@ const SocialSidebar: React.FC<SocialSidebarProps> = ({ user, onChatClick }) => {
     if (!supabase) return;
 
     try {
-      // Get total users (active users)
-      const { data: usersData, error: usersError } = await supabase.auth.admin.listUsers();
-      
       // Get posts from this week
       const oneWeekAgo = new Date();
       oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
@@ -35,21 +32,10 @@ const SocialSidebar: React.FC<SocialSidebarProps> = ({ user, onChatClick }) => {
         .select('id')
         .gte('created_at', oneWeekAgo.toISOString());
 
-      // Get new users from this week
-      const { data: newUsersData, error: newUsersError } = await supabase.auth.admin.listUsers();
-      
-      let newUsersCount = 0;
-      if (newUsersData?.users) {
-        newUsersCount = newUsersData.users.filter(user => {
-          const createdAt = new Date(user.created_at);
-          return createdAt >= oneWeekAgo;
-        }).length;
-      }
-
       setStats({
-        activeUsers: usersData?.users?.length || 1247, // Fallback to mock data
+        activeUsers: 1247, // Using fallback data since admin API is not accessible from client
         weeklyPosts: postsData?.length || 89,
-        newUsers: newUsersCount || 23
+        newUsers: 23 // Using fallback data since admin API is not accessible from client
       });
     } catch (error) {
       console.error('Error fetching community stats:', error);
